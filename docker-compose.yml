@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    container_name: link-storage-app
+    ports:
+      - "8080:8080"
+    environment:
+      APP_PORT: "8080"
+      REDIS_ADDR: "redis:6379"
+      REDIS_PASSWORD: ""
+      REDIS_DB: "0"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: link-storage-redis
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    expose:
+      - "6379"
+
+volumes:
+  redis_data:
